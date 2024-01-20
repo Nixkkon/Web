@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ampy - Discord Music Bot</title>
+    <style>
+        body {
+            background-color: #121212;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: #1f1f1f;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .invite-button {
+            display: block;
+            width: 200px;
+            padding: 15px;
+            margin: 0 auto;
+            text-align: center;
+            background: linear-gradient(to right, #4b0082, #8b00ff);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .select-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            background-color: #1f1f1f;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+        .select-option {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .commands-container {
+            display: none;
+        }
+        .commands-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .command-section {
+            border-radius: 15px;
+            background-color: #1f1f1f;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .information-box, .music-box, .filters-box, .utility-box {
+            border: 2px solid #00FFFF; /* Cyan border */
+        }
+        .back-button {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ampy</h1>
+        <p id="introText">Invite me to your server!</p>
+        <a class="invite-button" href="https://discord.com/api/oauth2/authorize?client_id=1084332939287990332&permissions=40276391222224&scope=bot+applications.commands" target="_blank" id="inviteButton">Invite Me</a>
+        <a class="invite-button" id="supportServerButton" href="https://discord.com/invite/mAAUgpjYEK" target="_blank">Support Server</a>
+
+        <!-- Menu Icon -->
+        <div class="menu-icon" onclick="toggleSelectMenu()">•••</div>
+
+        <!-- Select Menu -->
+        <div class="select-menu" id="mySelectMenu">
+            <div class="select-option" onclick="showCommands()">Commands</div>
+            <div class="select-option" onclick="goHome()">Home</div>
+        </div>
+
+        <!-- Commands Section -->
+        <div class="commands-container" id="commands" style="display: none;">
+            <h1>Commands</h1>
+
+            <!-- Information Category Commands -->
+            <div class="command-section information-box">
+                <h2>Information</h2>
+                <p>These are all available commands for this category to use.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>About</h2>
+                <p>Show information about the bot.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>Help</h2>
+                <p>Display all commands of the bot.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>Ping</h2>
+                <p>Check latency of bot!</p>
+            </div>
+
+            <div class="command-section">
+                <h2>Profile</h2>
+                <p>Show info about your profile.</p>
+            </div>
+
+            <!-- Music Category Commands -->
+            <div class="command-section music-box">
+                <h2>Music</h2>
+                <p>These are all available commands for this category to use.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>clearqueue</h2>
+                <p>Clear the current player queue.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>disconnect</h2>
+                <p>Force Disconnect the bot from your voice channel.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>join</h2>
+                <p>Invite bot to your voice channel.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>loop</h2>
+                <p>Set loop mode to current song.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>lyrics</h2>
+                <p>Display lyrics for the current played song.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>nowplaying</h2>
+                <p>Show the current playing song.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>pause</h2>
+                <p>Pause the current played song.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>play</h2>
+                <p>Play your favorite song/s.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>previous</h2>
+                <p>Return to the previous song.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>queue</h2>
+                <p>Show the current player queue.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>remove</h2>
+                <p>Remove a song from the queue.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>replay</h2>
+                <p>Replay the current song.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>resume</h2>
+                <p>Resume the current paused song.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>search</h2>
+                <p>Search for your favorite song.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>seek</h2>
+                <p>Seek the current played song.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>shuffle</h2>
+                <p>Shuffle the current player queue.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>skip</h2>
+                <p>Skip the current played song.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>skipto</h2>
+                <p>Skip the current played song to a specific queue position.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>stop</h2>
+                <p>Stop or disconnect the player.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>switch</h2>
+                <p>Move the position of two songs.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>volume</h2>
+                <p>Set the volume of the current player.</p>
+            </div>
+
+            <!-- Filters Category Commands -->
+            <div class="command-section filters-box">
+                <h2>Filters</h2>
+                <p>These are all available commands for this category to use.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>8d</h2>
+                <p>Set the current player filter to 8d.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>disable</h2>
+                <p>Clear the current player filters.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>earrape</h2>
+                <p>Set the current player filter to EarRape.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>nightcore</h2>
+                <p>Set the current player filter to Nightcore.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>slowmode</h2>
+                <p>Set the current player filter to Slowmode.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>vaporwave</h2>
+                <p>Set the current player filter to Vaporwave.</p>
+            </div>
+
+            <!-- Utility Category Commands -->
+            <div class="command-section utility-box">
+                <h2>Utility</h2>
+                <p>These are all available commands for this category to use.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>247</h2>
+                <p>Toggle enable 24/7 in the voice channel.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>autoplay</h2>
+                <p>Autoplay random related song/s.</p>
+            </div>
+
+            <div class="command-section">
+                <h2>control</h2>
+                <p>Display or hide the player control button.</p>
+            </div>
+        </div>
+      
+        <!-- Copyright Notice -->
+        <div style="text-align: center; margin-top: 20px;">
+            <p>© Ampy 2024</p>
+        </div>
+        <div style="text-align: center; margin-top: 20px; color: #999;">
+            <p>Made by Nick & Labib</p>
+        </div>
+        
+        <!-- Menu Icon -->
+        <div class="menu-icon" onclick="toggleSelectMenu()">•••</div>
+        
+        <!-- Back Button -->
+        <div class="back-button" id="backButton" onclick="goBack()"> ⇠ </div>
+        
+        <script>
+    var selectMenu = document.getElementById("mySelectMenu");
+    var commandsContainer = document.getElementById("commands");
+    var introText = document.getElementById("introText");
+    var inviteButton = document.getElementById("inviteButton");
+    var backButton = document.getElementById("backButton");
+
+    function toggleSelectMenu() {
+        if (selectMenu) {
+            selectMenu.style.display = (selectMenu.style.display === "block") ? "none" : "block";
+            backButton.style.display = "none"; // Hide the back button when toggling the ••• menu
+        }
+    }
+
+    function showCommands() {
+    if (commandsContainer && introText && inviteButton && backButton) {
+        commandsContainer.style.display = "block";
+
+        // Hide intro text
+        introText.style.display = "none";
+
+        // Show invite button
+        inviteButton.style.display = "block";
+
+        // Hide back option
+        backButton.style.display = "none";
+    }
+    }
+    
+    function goBack() {
+        if (commandsContainer && introText && inviteButton && backButton) {
+            commandsContainer.style.display = "none";
+
+            // Show intro text and "Invite Me" button
+            introText.style.display = "block";
+            inviteButton.style.display = "block";
+
+            // Hide back option
+            backButton.style.display = "none";
+        }
+    }
+
+    function goHome() {
+        window.location.reload();
+    }
+        </script>
+    </div>
+</body>
+</html>
