@@ -96,15 +96,33 @@
         <a class="invite-button" href="https://discord.com/api/oauth2/authorize?client_id=1084332939287990332&permissions=40276391222224&scope=bot+applications.commands" target="_blank" id="inviteButton">Invite Me</a>
         <a class="invite-button" id="supportServerButton" href="https://discord.com/invite/mAAUgpjYEK" target="_blank">Support Server</a>
 
+<!-- Ban Appeal Section -->
+<div class="ban-appeal-container" id="banAppeal" style="display: none; text-align: center;">
+    <h1 style="margin-bottom: 20px;">Ban Appeal</h1>
+    <p style="font-size: 16px; margin-bottom: 20px;">Write about your appeal, dont forget to add discord username.</p>
+    
+    <!-- Textarea for the appeal -->
+    <textarea id="appealText" rows="5" style="width: 80%; margin-bottom: 20px; padding: 10px; border-radius: 5px;" placeholder="Write your appeal"></textarea>
+
+    <!-- Submit Button -->
+    <button onclick="submitAppeal()" style="padding: 15px 30px; background-color: #4CAF50; color: #fff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">Submit</button>
+
+    <!-- Invite Me Button -->
+    <a class="invite-button" href="https://discord.com/api/oauth2/authorize?client_id=1084332939287990332&permissions=40276391222224&scope=bot+applications.commands" target="_blank" style="display: block; padding: 15px 30px; background: linear-gradient(to right, #4b0082, #8b00ff); color: #fff; text-decoration: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 20px;">Invite Me</a>
+
+    <!-- Support Server Button -->
+    <a class="invite-button" id="supportServerButton" href="https://discord.com/invite/mAAUgpjYEK" target="_blank" style="display: block; padding: 15px 30px; background-color: #3498db; color: #fff; text-decoration: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 20px;">Support Server</a>
+</div>
         <!-- Menu Icon -->
         <div class="menu-icon" onclick="toggleSelectMenu()">•••</div>
 
         <!-- Select Menu -->
-        <div class="select-menu" id="mySelectMenu">
-            <div class="select-option" onclick="showCommands()">Commands</div>
-            <div class="select-option" onclick="goHome()">Home</div>
-        </div>
-
+        <!-- Select Menu -->
+<div class="select-menu" id="mySelectMenu">
+    <div class="select-option" onclick="showCommands()">Commands</div>
+    <div class="select-option" onclick="showBanAppeal()">Ban Appeal</div>
+    <div class="select-option" onclick="goHome()">Home</div>
+</div>
         <!-- Commands Section -->
         <div class="commands-container" id="commands" style="display: none;">
             <h1>Commands</h1>
@@ -315,15 +333,16 @@
         <!-- Menu Icon -->
         <div class="menu-icon" onclick="toggleSelectMenu()">•••</div>
         
-        <!-- Back Button -->
-        <div class="back-button" id="backButton" onclick="goBack()"> ⇠ </div>
-        
+        <div class="back-button" id="backButton" onclick="goBack()"></div>
+      
         <script>
     var selectMenu = document.getElementById("mySelectMenu");
     var commandsContainer = document.getElementById("commands");
     var introText = document.getElementById("introText");
     var inviteButton = document.getElementById("inviteButton");
     var backButton = document.getElementById("backButton");
+    var banAppealContainer = document.getElementById("banAppeal");
+    var supportServerMainPage = document.getElementById("supportServerButton");
 
     function toggleSelectMenu() {
         if (selectMenu) {
@@ -332,23 +351,54 @@
         }
     }
 
+    function showBanAppeal() {
+        if (commandsContainer && introText && inviteButton && backButton && banAppealContainer) {
+            commandsContainer.style.display = "none";
+
+            // Hide intro text
+            introText.style.display = "none";
+
+            // Show invite button
+            inviteButton.style.display = "none";
+
+            // Show back option
+            backButton.style.display = "block";
+
+            // Show ban appeal section
+            banAppealContainer.style.display = "block";
+
+            // Hide the "Support Server" button from the main page
+            if (supportServerMainPage) {
+                supportServerMainPage.style.display = "none";
+            }
+        }
+    }
+
     function showCommands() {
-    if (commandsContainer && introText && inviteButton && backButton) {
-        commandsContainer.style.display = "block";
+        if (commandsContainer && introText && inviteButton && backButton && banAppealContainer) {
+            commandsContainer.style.display = "block";
 
-        // Hide intro text
-        introText.style.display = "none";
+            // Hide intro text
+            introText.style.display = "none";
 
-        // Show invite button
-        inviteButton.style.display = "block";
+            // Show invite button
+            inviteButton.style.display = "block";
 
-        // Hide back option
-        backButton.style.display = "none";
+            // Hide back option
+            backButton.style.display = "none";
+
+            // Hide ban appeal section
+            banAppealContainer.style.display = "none";
+
+            // Show the "Support Server" button from the main page
+            if (supportServerMainPage) {
+                supportServerMainPage.style.display = "block";
+            }
+        }
     }
-    }
-    
+
     function goBack() {
-        if (commandsContainer && introText && inviteButton && backButton) {
+        if (commandsContainer && introText && inviteButton && backButton && banAppealContainer) {
             commandsContainer.style.display = "none";
 
             // Show intro text and "Invite Me" button
@@ -357,11 +407,52 @@
 
             // Hide back option
             backButton.style.display = "none";
+
+            // Hide ban appeal section
+            banAppealContainer.style.display = "none";
+
+            // Show the "Support Server" button from the main page
+            if (supportServerMainPage) {
+                supportServerMainPage.style.display = "block";
+            }
         }
     }
 
     function goHome() {
         window.location.reload();
+    }
+
+    function submitAppeal() {
+        var appealText = document.getElementById("appealText").value;
+
+        // Check if the appealText contains "@everyone" or "@here"
+        if (appealText.includes("@everyone") || appealText.includes("@here")) {
+            alert("Please avoid using @everyone or @here in your ban appeal.");
+            return; // Don't proceed with submission
+        }
+
+        if (appealText) {
+            fetch('https://discord.com/api/webhooks/1190235413961519175/dVcUzHhEe0x5GAyGmSJxR_q8AXsScQ-93mQYw94qjcE_HSFZ3BbD4_zK-IJmpjrknYY8', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: appealText }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Ban appeal submitted successfully!");
+                } else {
+                    alert("Error submitting ban appeal. Please try again later.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred. Please try again later.");
+            });
+        } else {
+            alert("Please provide text for your ban appeal.");
+        }
     }
         </script>
     </div>
